@@ -98,7 +98,7 @@ saveSettings.addEventListener('click', async function() {
         formData.append('ads_enabled', adsEnabled.checked);
         formData.append('modal_delay_seconds', modalDelay.value);
         
-        const response = await fetch('${API_BASE}/api/admin/settings', {
+        const response = await fetch(`${API_BASE}/api/admin/settings`, {
             method: 'PUT',
             body: formData
         });
@@ -239,7 +239,7 @@ clearLogs.addEventListener('click', async function() {
 async function checkSystemStatus() {
     try {
         // Check database
-        const healthResponse = await fetch('${API_BASE}/health');
+        const healthResponse = await fetch(`${API_BASE}/health`);
         if (healthResponse.ok) {
             dbStatus.textContent = 'Faol';
             dbStatus.className = 'px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm';
@@ -324,3 +324,4 @@ function escapeHtml(text) {
     return div.innerHTML;
 
 }
+
