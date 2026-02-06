@@ -1,9 +1,9 @@
-/**
- * admin.js - Admin panel logic for Latinify
- * Handles advertisement management and statistics
- */
+const API_BASE = (
+  location.hostname.includes('github.io')
+    ? 'https://latinfy.onrender.com'
+    : ''
+);
 
-// Get token from URL
 const urlParams = new URLSearchParams(window.location.search);
 const adminToken = urlParams.get('token');
 
@@ -93,7 +93,7 @@ function switchTab(tabName) {
 // Load all ads
 async function loadAds() {
     try {
-        const response = await fetch(`/api/admin/ads?token=${adminToken}`);
+        const response = await fetch(`${API_BASE}/api/admin/ads?token=${adminToken}`);
         
         if (response.status === 403) {
             showNotification('Admin token noto\'g\'ri yoki muddati o\'tgan', 'error');
@@ -178,7 +178,7 @@ window.toggleAd = async function(adId) {
     }
     
     try {
-        const response = await fetch(`/api/admin/ads/${adId}/toggle?token=${adminToken}`, {
+        const response = await fetch(`${API_BASE}/api/admin/ads/${adId}/toggle?token=${adminToken}`, {
             method: 'PUT'
         });
         
@@ -203,7 +203,7 @@ window.deleteAd = async function(adId) {
     }
     
     try {
-        const response = await fetch(`/api/admin/ads/${adId}?token=${adminToken}`, {
+        const response = await fetch(`${API_BASE}/api/admin/ads/${adId}?token=${adminToken}`, {
             method: 'DELETE'
         });
         
@@ -230,7 +230,7 @@ refreshAds.addEventListener('click', loadAds);
 // Load statistics
 async function loadStats() {
     try {
-        const response = await fetch(`/api/admin/stats?token=${adminToken}`);
+        const response = await fetch(`${API_BASE}/api/admin/stats?token=${adminToken}`);
         
         if (!response.ok) {
             throw new Error('Server xatosi');
@@ -359,7 +359,7 @@ addAdForm.addEventListener('submit', async function(e) {
     
     // Submit
     try {
-        const response = await fetch('/api/admin/ads/create', {
+        const response = await fetch('${API_BASE}/api/admin/ads/create', {
             method: 'POST',
             body: formData
         });
@@ -469,4 +469,5 @@ document.addEventListener('DOMContentLoaded', function() {
             loadStats();
         }
     }, 30000); // Every 30 seconds
+
 }); 
