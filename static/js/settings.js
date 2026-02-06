@@ -1,9 +1,9 @@
-/**
- * settings.js - Settings page logic for Latinify
- * Handles global configuration and dangerous operations
- */
+const API_BASE = (
+  location.hostname.includes('github.io')
+    ? 'https://latinfy.onrender.com'
+    : ''
+);
 
-// Get token from URL
 const urlParams = new URLSearchParams(window.location.search);
 const adminToken = urlParams.get('token');
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Load current settings from API
 async function loadCurrentSettings() {
     try {
-        const response = await fetch(`/api/admin/settings?token=${adminToken}`);
+        const response = await fetch(`${API_BASE}/api/admin/settings?token=${adminToken}`);
         
         if (response.status === 403) {
             showNotification('Admin token noto\'g\'ri yoki muddati o\'tgan', 'error');
@@ -98,7 +98,7 @@ saveSettings.addEventListener('click', async function() {
         formData.append('ads_enabled', adsEnabled.checked);
         formData.append('modal_delay_seconds', modalDelay.value);
         
-        const response = await fetch('/api/admin/settings', {
+        const response = await fetch('${API_BASE}/api/admin/settings', {
             method: 'PUT',
             body: formData
         });
@@ -146,7 +146,7 @@ deleteAllAds.addEventListener('click', async function() {
     
     // Get all ads first to confirm
     try {
-        const adsResponse = await fetch(`/api/admin/ads?token=${adminToken}`);
+        const adsResponse = await fetch(`${API_BASE}/api/admin/ads?token=${adminToken}`);
         if (!adsResponse.ok) throw new Error('Reklamalarni olish xatosi');
         
         const adsData = await adsResponse.json();
@@ -171,7 +171,7 @@ deleteAllAds.addEventListener('click', async function() {
         
         for (const ad of adsData.ads) {
             try {
-                const deleteResponse = await fetch(`/api/admin/ads/${ad.id}?token=${adminToken}`, {
+                const deleteResponse = await fetch(`${API_BASE}/api/admin/ads/${ad.id}?token=${adminToken}`, {
                     method: 'DELETE'
                 });
                 
@@ -239,7 +239,7 @@ clearLogs.addEventListener('click', async function() {
 async function checkSystemStatus() {
     try {
         // Check database
-        const healthResponse = await fetch('/health');
+        const healthResponse = await fetch('${API_BASE}/health');
         if (healthResponse.ok) {
             dbStatus.textContent = 'Faol';
             dbStatus.className = 'px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm';
@@ -322,4 +322,5 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+
 }
