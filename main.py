@@ -117,24 +117,39 @@ async def log_conversion(
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """
-    Main user interface
+    Main user interface - serve index.html directly
     """
     # Get user session
     session_id, session_data = get_user_session(request)
     
-    # Get settings
+    # Get settings from database
     db = next(get_db())
     settings = get_settings(db)
     
-    # Prepare response with session cookie
-    response = templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "ads_enabled": settings.ads_enabled,
-            "modal_delay": settings.modal_delay_seconds
-        }
-    )
+    # Read index.html file
+    try:
+        with open("index.html", "r", encoding="utf-8") as f:
+            html_content = f.read()
+    except FileNotFoundError:
+        # Fallback if index.html not in root
+        return HTMLResponse("""
+        <html>
+            <body style="font-family: Arial; padding: 50px; text-align: center;">
+                <h1>Latinify</h1>
+                <p>index.html faylini asosiy papkaga joylang.</p>
+                <p>Current directory: """ + os.getcwd() + """</p>
+            </body>
+        </html>
+        """)
+    
+    # Prepare response
+    response = HTMLResponse(content=html_content)
+    
+    # Set session cookie if not present
+    if not request.cookies.get("session_id"):
+        response.set_cookie(key="session_id", value=session_id, httponly=True)
+    
+    return response
     
     # Set session cookie if not present
     if not request.cookies.get("session_id"):
@@ -537,3 +552,4 @@ if __name__ == "__main__":
         log_level="info"
 
     )
+
