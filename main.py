@@ -511,6 +511,17 @@ async def server_error_handler(request: Request, exc):
         content={"error": "Server xatosi"}
     )
 
+@app.get("/api/get-ad-settings")
+async def get_ad_settings(db: Session = Depends(get_db)):
+    """
+    Get advertisement settings for frontend
+    """
+    settings = get_settings(db)
+    return JSONResponse({
+        "ads_enabled": settings.ads_enabled,
+        "modal_delay_seconds": settings.modal_delay_seconds
+    })
+
 
 # ======================
 # RUN APPLICATION
@@ -524,4 +535,5 @@ if __name__ == "__main__":
         port=8000,
         reload=True,
         log_level="info"
+
     )
