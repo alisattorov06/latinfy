@@ -1,6 +1,7 @@
 /**
  * user.js - User interface logic for Latinify
  * Handles text conversion, file uploads, and ad display
+ * Render.com compatible version
  */
 
 // Global variables
@@ -8,6 +9,8 @@ let conversionCount = 0;
 let currentAd = null;
 let currentFile = null;
 let adModalShown = false;
+let adsEnabled = true; // Default value
+let modalDelay = 5; // Default value
 
 // DOM Elements
 const inputText = document.getElementById('inputText');
@@ -44,6 +47,45 @@ const closeAdBtn = document.getElementById('closeAd');
 const adLink = document.getElementById('adLink');
 const adImage = document.getElementById('adImage');
 const adTitle = document.getElementById('adTitle');
+
+// ======================
+// INITIALIZATION
+// ======================
+
+// Check for ads on page load
+document.addEventListener('DOMContentLoaded', async function() {
+    // Load conversion count from localStorage
+    const savedCount = localStorage.getItem('latinify_conversion_count');
+    if (savedCount) {
+        conversionCount = parseInt(savedCount);
+        updateConversionCounter();
+    }
+    
+    // Load settings from API
+    await loadSettings();
+    
+    // Check ads after delay
+    if (adsEnabled) {
+        setTimeout(checkForAds, 1000);
+    }
+    
+    // Initialize tooltips
+    initTooltips();
+});
+
+// Load settings from API
+async function loadSettings() {
+    try {
+        const response = await fetch('/api/get-ad-settings');
+        if (response.ok) {
+            const data = await response.json();
+            adsEnabled = data.ads_enabled;
+            modalDelay = data.modal_delay_seconds;
+        }
+    } catch (error) {
+        console.error('Settings load error:', error);
+    }
+}
 
 // ======================
 // TEXT CONVERSION
@@ -346,22 +388,9 @@ convertAnotherBtn.addEventListener('click', function() {
 // ADVERTISEMENT SYSTEM
 // ======================
 
-// Check for ads on page load
-document.addEventListener('DOMContentLoaded', async function() {
-    // Load conversion count from localStorage
-    const savedCount = localStorage.getItem('latinify_conversion_count');
-    if (savedCount) {
-        conversionCount = parseInt(savedCount);
-        updateConversionCounter();
-    }
-    
-    // Check ads after delay
-    setTimeout(checkForAds, 1000);
-});
-
 // Check for available ads
 async function checkForAds() {
-    if (adModalShown) return;
+    if (adModalShown || !adsEnabled) return;
     
     try {
         const response = await fetch('/api/get-ad');
@@ -384,7 +413,7 @@ async function checkForAds() {
 
 // Show advertisement modal
 function showAdModal(ad) {
-    if (adModalShown || !ad) return;
+    if (adModalShown || !ad || !adsEnabled) return;
     
     adImage.src = ad.image_url;
     adImage.alt = ad.title;
@@ -510,8 +539,3 @@ function initTooltips() {
         });
     });
 }
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    initTooltips();
-});
