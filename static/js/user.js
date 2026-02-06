@@ -1,9 +1,9 @@
-/**
- * user.js - User interface logic for Latinify
- * Handles text conversion, file uploads, and ad display
- */
+const API_BASE = (
+  location.hostname.includes('github.io')
+    ? 'https://latinfy.onrender.com'
+    : ''
+);
 
-// Global variables
 let conversionCount = 0;
 let currentAd = null;
 let currentFile = null;
@@ -64,7 +64,7 @@ detectBtn.addEventListener('click', async function() {
     }
 
     try {
-        const response = await fetch('/api/convert-text', {
+        const response = await fetch('${API_BASE}/api/convert-text', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -123,7 +123,7 @@ async function convertText(direction) {
     `;
 
     try {
-        const response = await fetch('/api/convert-text', {
+        const response = await fetch('${API_BASE}/api/convert-text', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -297,7 +297,7 @@ convertDocxBtn.addEventListener('click', async function() {
         formData.append('file', currentFile);
         formData.append('direction', docxDirection.value);
 
-        const response = await fetch('/api/upload-docx', {
+        const response = await fetch('${API_BASE}/api/upload-docx', {
             method: 'POST',
             body: formData
         });
@@ -364,7 +364,7 @@ async function checkForAds() {
     if (adModalShown) return;
     
     try {
-        const response = await fetch('/api/get-ad');
+        const response = await fetch('${API_BASE}/api/get-ad');
         if (!response.ok) return;
         
         const data = await response.json();
@@ -514,4 +514,5 @@ function initTooltips() {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
+
 });
