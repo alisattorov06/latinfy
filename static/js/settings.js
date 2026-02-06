@@ -1,7 +1,7 @@
 const API_BASE = (
-  location.hostname.includes('github.io')
-    ? 'https://latinfy.onrender.com'
-    : ''
+    location.hostname.includes('github.io')
+        ? 'https://latinfy.onrender.com'
+        : ''
 );
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -25,25 +25,25 @@ const lastCheck = document.getElementById('lastCheck');
 // INITIALIZATION
 // ======================
 
-document.addEventListener('DOMContentLoaded', async function() {
+document.addEventListener('DOMContentLoaded', async function () {
     // Check for admin token
     if (!adminToken) {
         showNotification('Admin token kerak', 'error');
         setTimeout(() => window.location.href = '/admin', 2000);
         return;
     }
-    
+
     // Load current settings
     await loadCurrentSettings();
-    
+
     // Initialize UI
     updateDelayDisplay();
     checkSystemStatus();
-    
+
     // Set up periodic status check
     setInterval(checkSystemStatus, 60000); // Every minute
     setInterval(updateLastCheckTime, 60000); // Update time display
-    
+
     // Initialize last check time
     updateLastCheckTime();
 });
@@ -56,26 +56,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 async function loadCurrentSettings() {
     try {
         const response = await fetch(`${API_BASE}/api/admin/settings?token=${adminToken}`);
-        
+
         if (response.status === 403) {
             showNotification('Admin token noto\'g\'ri yoki muddati o\'tgan', 'error');
             setTimeout(() => window.location.href = '/admin', 2000);
             return;
         }
-        
+
         if (!response.ok) {
             throw new Error('Server xatosi');
         }
-        
+
         const data = await response.json();
-        
+
         // Update UI with current settings
         adsEnabled.checked = data.settings.ads_enabled;
         modalDelay.value = data.settings.modal_delay_seconds;
         updateDelayDisplay();
-        
+
         showNotification('Sozlamalar yuklandi', 'success');
-        
+
     } catch (error) {
         showNotification('Sozlamalarni yuklash xatosi', 'error');
         console.error(error);
@@ -91,43 +91,47 @@ function updateDelayDisplay() {
 modalDelay.addEventListener('input', updateDelayDisplay);
 
 // Save settings
-saveSettings.addEventListener('click', async function() {
+saveSettings.addEventListener('click', async function () {
     try {
         const formData = new FormData();
         formData.append('token', adminToken);
         formData.append('ads_enabled', adsEnabled.checked);
         formData.append('modal_delay_seconds', modalDelay.value);
-        
-        const response = await fetch(`${API_BASE}/api/admin/settings`, {
-            method: 'PUT',
-            body: formData
-        });
-        
+
+        const response = await fetch(
+            `${API_BASE}/api/admin/settings?token=${adminToken}`,
+            {
+                method: 'PUT',
+                body: formData
+            }
+        );
+
+
         if (!response.ok) {
             const error = await response.text();
             throw new Error(error);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showNotification('Sozlamalar muvaffaqiyatli saqlandi!', 'success');
-            
+
             // Visual feedback
             saveSettings.innerHTML = '<i class="fas fa-check mr-2"></i>Saqlangan!';
             saveSettings.classList.remove('bg-green-600', 'hover:bg-green-700');
             saveSettings.classList.add('bg-green-500');
-            
+
             setTimeout(() => {
                 saveSettings.innerHTML = '<i class="fas fa-save mr-2"></i>Saqlash';
                 saveSettings.classList.remove('bg-green-500');
                 saveSettings.classList.add('bg-green-600', 'hover:bg-green-700');
             }, 2000);
-            
+
         } else {
             throw new Error('Sozlamalarni saqlash xatosi');
         }
-        
+
     } catch (error) {
         showNotification('Sozlamalarni saqlash xatosi: ' + error.message, 'error');
         console.error(error);
@@ -139,42 +143,42 @@ saveSettings.addEventListener('click', async function() {
 // ======================
 
 // Delete all ads
-deleteAllAds.addEventListener('click', async function() {
+deleteAllAds.addEventListener('click', async function () {
     if (!confirm('ROSTAN HAM barcha reklamalarni o\'chirmoqchimisiz?\n\nBu amalni bekor qilib bo\'lmaydi. Barcha reklama rasmlari ham o\'chiriladi.')) {
         return;
     }
-    
+
     // Get all ads first to confirm
     try {
         const adsResponse = await fetch(`${API_BASE}/api/admin/ads?token=${adminToken}`);
         if (!adsResponse.ok) throw new Error('Reklamalarni olish xatosi');
-        
+
         const adsData = await adsResponse.json();
         const adCount = adsData.ads.length;
-        
+
         if (adCount === 0) {
             showNotification('O\'chirish uchun reklamalar yo\'q', 'warning');
             return;
         }
-        
+
         if (!confirm(`${adCount} ta reklama o\'chiriladi. Davom etishni tasdiqlaysizmi?`)) {
             return;
         }
-        
+
         // Show loading
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>O\'chirilmoqda...';
-        
+
         // Delete each ad one by one
         let deletedCount = 0;
         let errors = [];
-        
+
         for (const ad of adsData.ads) {
             try {
                 const deleteResponse = await fetch(`${API_BASE}/api/admin/ads/${ad.id}?token=${adminToken}`, {
                     method: 'DELETE'
                 });
-                
+
                 if (deleteResponse.ok) {
                     deletedCount++;
                 } else {
@@ -184,7 +188,7 @@ deleteAllAds.addEventListener('click', async function() {
                 errors.push(`Reklama ID ${ad.id}: ${error.message}`);
             }
         }
-        
+
         // Show result
         if (errors.length === 0) {
             showNotification(`${deletedCount} ta reklama muvaffaqiyatli o\'chirildi`, 'success');
@@ -192,7 +196,7 @@ deleteAllAds.addEventListener('click', async function() {
             showNotification(`${deletedCount} ta reklama o\'chirildi, ${errors.length} ta xatolik`, 'warning');
             console.error('Deletion errors:', errors);
         }
-        
+
     } catch (error) {
         showNotification('Reklamalarni o\'chirish xatosi: ' + error.message, 'error');
         console.error(error);
@@ -204,23 +208,23 @@ deleteAllAds.addEventListener('click', async function() {
 });
 
 // Clear conversion logs
-clearLogs.addEventListener('click', async function() {
+clearLogs.addEventListener('click', async function () {
     if (!confirm('ROSTAN HAM barcha konvertatsiya tarixini tozalamoqchimisiz?\n\nStatistikalar yo\'qoladi va bu amalni bekor qilib bo\'lmaydi.')) {
         return;
     }
-    
+
     try {
         // Show loading
         this.disabled = true;
         this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Tozalanmoqda...';
-        
+
         // Note: This endpoint needs to be implemented in backend
         // For now, we'll show a message
         showNotification('Loglarni tozalash funktsiyasi backendda amalga oshirilishi kerak', 'info');
-        
+
         // In a real implementation, you would call an API endpoint:
         // const response = await fetch(`/api/admin/clear-logs?token=${adminToken}`, { method: 'DELETE' });
-        
+
     } catch (error) {
         showNotification('Loglarni tozalash xatosi: ' + error.message, 'error');
         console.error(error);
@@ -247,19 +251,19 @@ async function checkSystemStatus() {
             dbStatus.textContent = 'Xatolik';
             dbStatus.className = 'px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm';
         }
-        
+
         // Check uploads directory (simulated)
         uploadsStatus.textContent = 'Mavjud';
         uploadsStatus.className = 'px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm';
-        
+
         // Check ads images directory (simulated)
         adsImagesStatus.textContent = 'Mavjud';
         adsImagesStatus.className = 'px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm';
-        
+
     } catch (error) {
         dbStatus.textContent = 'Offline';
         dbStatus.className = 'px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm';
-        
+
         console.error('Status check error:', error);
     }
 }
@@ -267,8 +271,8 @@ async function checkSystemStatus() {
 // Update last check time display
 function updateLastCheckTime() {
     const now = new Date();
-    const timeString = now.toLocaleTimeString('uz-UZ', { 
-        hour: '2-digit', 
+    const timeString = now.toLocaleTimeString('uz-UZ', {
+        hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
     });
@@ -286,29 +290,28 @@ function showNotification(message, type = 'info') {
     if (existingNotification) {
         existingNotification.remove();
     }
-    
+
     // Create notification element
     const notification = document.createElement('div');
-    notification.className = `settings-notification fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white max-w-sm transform transition-all duration-300 ${
-        type === 'success' ? 'bg-green-500' :
-        type === 'error' ? 'bg-red-500' :
-        type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
-    }`;
-    
+    notification.className = `settings-notification fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white max-w-sm transform transition-all duration-300 ${type === 'success' ? 'bg-green-500' :
+            type === 'error' ? 'bg-red-500' :
+                type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+        }`;
+
     // Add icon based on type
     const icon = type === 'success' ? 'fa-check-circle' :
-                 type === 'error' ? 'fa-exclamation-circle' :
-                 type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
-    
+        type === 'error' ? 'fa-exclamation-circle' :
+            type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+
     notification.innerHTML = `
         <div class="flex items-center">
             <i class="fas ${icon} mr-3"></i>
             <span>${message}</span>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
         notification.style.opacity = '0';
