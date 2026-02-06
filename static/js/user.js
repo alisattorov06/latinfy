@@ -317,7 +317,7 @@ convertDocxBtn.addEventListener('click', async function() {
         conversionResult.classList.remove('hidden');
         
         // Set download link
-        downloadBtn.href = `/api/download/${data.file_id}`;
+        downloadBtn.href = `${API_BASE}/api/download/${data.file_id}`;
         downloadBtn.download = data.filename;
         
         incrementConversionCount();
@@ -386,7 +386,7 @@ async function checkForAds() {
 function showAdModal(ad) {
     if (adModalShown || !ad) return;
     
-    adImage.src = ad.image_url;
+    adImage.src = ad.image_path;
     adImage.alt = ad.title;
     adTitle.textContent = ad.title;
     adLink.href = ad.redirect_url;
