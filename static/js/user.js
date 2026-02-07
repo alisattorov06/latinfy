@@ -382,40 +382,58 @@ async function checkForAds() {
     }
 }
 
-// Show advertisement modal
+// Show advertisement modal (FIXED)
 function showAdModal(ad) {
     if (adModalShown || !ad) return;
-    
-    adImage.src = ad.image_url;
-    adImage.alt = ad.title;
-    adTitle.textContent = ad.title;
-    adLink.href = ad.redirect_url;
-    
+
+    // 🔒 Image URL'ni xavfsiz aniqlash
+    const img = ad.image_url || ad.image_path;
+
+    if (!img) {
+        console.warn('Ad image not found', ad);
+        return;
+    }
+
+    // 🔑 To‘liq URL qilib beramiz
+    adImage.src = img.startsWith('http')
+        ? img
+        : location.origin + img;
+
+    adImage.alt = ad.title || 'Reklama';
+    adTitle.textContent = ad.title || '';
+
+    if (ad.redirect_url) {
+        adLink.href = ad.redirect_url;
+    } else {
+        adLink.removeAttribute('href');
+    }
+
     adModal.style.display = 'block';
     adModalShown = true;
-    
+
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
 }
 
 // Close ad modal
-closeAdBtn.addEventListener('click', function(e) {
+closeAdBtn.addEventListener('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    
+
     adModal.style.display = 'none';
     document.body.style.overflow = 'auto';
     adModalShown = false;
 });
 
 // Close modal when clicking outside
-adModal.addEventListener('click', function(e) {
+adModal.addEventListener('click', function (e) {
     if (e.target === adModal) {
         adModal.style.display = 'none';
         document.body.style.overflow = 'auto';
         adModalShown = false;
     }
 });
+
 
 // ======================
 // UTILITY FUNCTIONS
@@ -516,5 +534,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
 
 });
+
 
 
