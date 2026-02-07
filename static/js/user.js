@@ -386,7 +386,7 @@ async function checkForAds() {
 function showAdModal(ad) {
     if (adModalShown || !ad) return;
     
-    adImage.src = ad.image_path;
+    adImage.src = ad.image_url || ad.image_path;
     adImage.alt = ad.title;
     adTitle.textContent = ad.title;
     adLink.href = ad.redirect_url;
@@ -516,3 +516,4 @@ document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
 
 });
+
