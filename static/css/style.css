@@ -1,0 +1,493 @@
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+/* Barcha mobil qurilmalar uchun optimallashtirilgan */
+
+/* Asosiy sozlamalar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Container uchun mobil sozlamalar */
+.container {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+nav .container {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+nav h1 {
+    font-size: 1.25rem !important;
+}
+
+nav .text-2xl {
+    font-size: 1.25rem !important;
+}
+
+nav p {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+#conversionCounter {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* ===== GRID LAYOUT ===== */
+/* Mobilda ikkita kartani vertikal joylashtirish */
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ===== CARDS ===== */
+.bg-white {
+    border-radius: 1rem;
+    padding: 1rem !important;
+    margin-bottom: 1rem;
+}
+
+/* Card headers */
+.bg-white h2 {
+    font-size: 1.25rem !important;
+}
+
+.bg-white p {
+    font-size: 0.875rem;
+}
+
+/* Icon containers */
+.bg-blue-100,
+.bg-purple-100 {
+    padding: 0.5rem !important;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-blue-100 i,
+.bg-purple-100 i {
+    font-size: 1.25rem !important;
+}
+
+/* ===== TEXTAREA VA INPUT ===== */
+textarea,
+select {
+    font-size: 1rem !important;
+    padding: 0.75rem !important;
+    min-height: 120px;
+    width: 100%;
+    border-radius: 0.5rem;
+    touch-action: manipulation;
+}
+
+textarea:focus,
+select:focus,
+input:focus {
+    outline: none;
+    ring: 2px solid #667eea;
+}
+
+/* ===== BUTTONS ===== */
+button,
+.button {
+    font-size: 0.875rem !important;
+    padding: 0.625rem 1rem !important;
+    border-radius: 0.5rem;
+    white-space: nowrap;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 44px; /* iOS uchun minimal bosish maydoni */
+}
+
+/* Katta tugmalar */
+#convertDocxBtn,
+.w-full.py-4 {
+    font-size: 1rem !important;
+    padding: 0.875rem 1.5rem !important;
+    min-height: 48px;
+}
+
+/* Button grid (2 kolonka) */
+.grid.grid-cols-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.grid.grid-cols-2 button {
+    padding: 0.75rem 0.5rem !important;
+    font-size: 0.8rem !important;
+}
+
+/* ===== FILE UPLOAD AREA ===== */
+.file-upload-area {
+    padding: 1.5rem !important;
+}
+
+.file-upload-area h3 {
+    font-size: 1rem !important;
+}
+
+.file-upload-area p {
+    font-size: 0.8rem !important;
+}
+
+.file-upload-area i.fa-cloud-upload-alt {
+    font-size: 2rem !important;
+}
+
+/* ===== RESULT BOX ===== */
+.result-box {
+    min-height: 100px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 0.75rem !important;
+    font-size: 0.95rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ===== INFO BOXES ===== */
+.bg-blue-50,
+.bg-yellow-50 {
+    padding: 0.75rem !important;
+    border-radius: 0.5rem;
+}
+
+.bg-blue-50 p,
+.bg-yellow-50 p {
+    font-size: 0.8rem !important;
+    line-height: 1.4;
+}
+
+/* ===== STATISTICS CARDS (3 cards) ===== */
+.md\\:grid-cols-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.md\\:grid-cols-3 > div {
+    padding: 1rem !important;
+}
+
+.md\\:grid-cols-3 h3 {
+    font-size: 1rem !important;
+}
+
+.md\\:grid-cols-3 p {
+    font-size: 0.8rem !important;
+}
+
+/* ===== MODAL ===== */
+.ad-modal {
+    padding: 1rem;
+}
+
+.ad-content {
+    margin: 20% auto !important;
+    width: 95% !important;
+    max-width: 400px;
+}
+
+.ad-content img {
+    height: 200px !important;
+    object-fit: cover;
+}
+
+.ad-content h3 {
+    font-size: 1.1rem !important;
+}
+
+.ad-content .p-6 {
+    padding: 1rem !important;
+}
+
+#closeAd {
+    width: 32px;
+    height: 32px;
+    right: 0.5rem !important;
+    top: 0.5rem !important;
+}
+
+/* ===== SELECTED FILE INFO ===== */
+#selectedFileInfo {
+    padding: 0.75rem !important;
+    font-size: 0.875rem;
+}
+
+#selectedFileInfo span {
+    font-size: 0.8rem !important;
+}
+
+/* ===== CONVERSION RESULT ===== */
+#conversionResult {
+    padding: 1rem !important;
+}
+
+#conversionResult h4 {
+    font-size: 1rem !important;
+}
+
+#conversionResult p {
+    font-size: 0.85rem !important;
+}
+
+#conversionResult .flex.space-x-3 {
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#conversionResult a,
+#conversionResult button {
+    width: 100%;
+}
+
+/* ===== FOOTER ===== */
+footer {
+    padding-top: 2rem !important;
+    font-size: 0.85rem;
+    margin-top: 2rem !important;
+}
+
+footer p {
+    font-size: 0.8rem !important;
+}
+
+/* ===== FLEX UTILITIES ===== */
+.flex.justify-between {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.flex.items-center {
+    align-items: center;
+}
+
+.space-x-2 > * + * {
+    margin-left: 0.5rem;
+}
+
+/* ===== CHAR COUNT ===== */
+.text-sm {
+    font-size: 0.8rem !important;
+}
+
+/* ===== KICHIK EKRANLAR (iPhone SE, Galaxy Fold) ===== */
+@media (max-width: 375px) {
+    .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+    
+    nav h1 {
+        font-size: 1.1rem !important;
+    }
+    
+    .bg-white {
+        padding: 0.75rem !important;
+    }
+    
+    textarea {
+        min-height: 100px;
+        font-size: 0.95rem !important;
+    }
+    
+    button {
+        font-size: 0.8rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    .grid.grid-cols-2 button {
+        font-size: 0.75rem !important;
+        padding: 0.625rem 0.5rem !important;
+    }
+    
+    .result-box {
+        max-height: 200px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== O'RTA EKRANLAR (iPhone 12/13/14, Samsung Galaxy) ===== */
+@media (min-width: 376px) and (max-width: 428px) {
+    textarea {
+        min-height: 130px;
+    }
+    
+    .result-box {
+        max-height: 280px;
+    }
+}
+
+/* ===== KATTA EKRANLAR (iPhone Pro Max, Plus) ===== */
+@media (min-width: 429px) and (max-width: 767px) {
+    .bg-white {
+        padding: 1.25rem !important;
+    }
+    
+    textarea {
+        min-height: 150px;
+    }
+    
+    .result-box {
+        max-height: 320px;
+    }
+    
+    .md\\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== LANDSCAPE MODE (Gorizontal holatda) ===== */
+@media (max-width: 767px) and (orientation: landscape) {
+    nav {
+        position: relative;
+    }
+    
+    textarea,
+    .result-box {
+        min-height: 80px;
+        max-height: 150px;
+    }
+    
+    .ad-content {
+        margin: 5% auto !important;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+/* ===== TABLET (iPad, Android tablets) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        max-width: 720px;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .md\\:grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    textarea {
+        min-height: 150px;
+    }
+    
+    .result-box {
+        max-height: 350px;
+    }
+}
+
+/* ===== DESKTOP (1024px va yuqori) ===== */
+@media (min-width: 1024px) {
+    .container {
+        max-width: 1200px;
+    }
+    
+    .lg\\:grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .md\\:grid-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ===== ACCESSIBILITY (Foydalanuvchi qulayligi) ===== */
+*:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Touch qurilmalari uchun hover effektlarini o'chirish */
+@media (hover: none) and (pointer: coarse) {
+    button:hover,
+    .file-upload-area:hover {
+        background-color: inherit;
+    }
+}
+
+/* ===== DARK MODE SUPPORT (ixtiyoriy) ===== */
+@media (prefers-color-scheme: dark) {
+    /* Bu qismni kerak bo'lsa qo'shing */
+}
+
+/* ===== SCROLLBAR STYLING (mobil brauzerlar uchun) ===== */
+.result-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.result-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.result-box::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.result-box::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* ===== ANIMATION OPTIMIZATSIYASI ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== SAFE AREA (iPhone X va yuqori) ===== */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    nav,
+    footer,
+    button,
+    .ad-modal {
+        display: none !important;
+    }
+}
